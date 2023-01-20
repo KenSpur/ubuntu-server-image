@@ -1,6 +1,6 @@
 # 🖼️ ubuntu-server-image
 
-## ⚙️ Technologies used
+## 🛠️ Technologies used
 - [Packer](https://www.packer.io/) Image creation tool
 - [cloud-init](https://cloudinit.readthedocs.io/en/latest/) Configuration tool for cloud instances
 
