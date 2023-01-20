@@ -6,3 +6,6 @@
 
 ## 🎯 Targets
 - [Proxmox](https://www.proxmox.com/en/proxmox-ve) Software server for virtualization management
+
+## 👏 Credits
+- (ChristianLempa)[https://github.com/ChristianLempa/boilerplates] for proxmox packer boilerplates
