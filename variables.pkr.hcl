@@ -33,3 +33,9 @@ variable "ssh_password" {
   type      = string
   sensitive = true
 }
+
+# Other Variables
+variable "cloud_init_apt_packages" {
+  type    = list(string)
+  default = ["sudo"]
+}

@@ -1,3 +1,17 @@
+source "file" "meta_data" {
+  source = "${path.root}/templates/meta-data.pkrtpl"
+  target = "${path.root}/http/meta-data"
+}
+
+source "file" "user_data" {
+  content = templatefile("${path.root}/templates/user-data.pkrtpl", {
+    ssh_username            = var.ssh_username
+    ssh_password            = bcrypt(var.ssh_password)
+    cloud_init_apt_packages = var.cloud_init_apt_packages
+  })
+  target = "${path.root}/http/user-data"
+}
+
 source "proxmox" "ubuntu-server-22-04-lts" {
   proxmox_url              = "${var.proxmox_api_url}"
   username                 = "${var.proxmox_api_token_id}"
@@ -56,7 +70,11 @@ source "proxmox" "ubuntu-server-22-04-lts" {
 }
 
 build {
-  sources = ["source.proxmox.ubuntu-server-22-04-lts"]
+  sources = [
+    "source.file.meta_data",
+    "source.file.user_data",
+    "source.proxmox.ubuntu-server-22-04-lts"
+  ]
 
   provisioner "shell" {
     inline = [

@@ -9,3 +9,4 @@
 
 ## 👏 Credits
 - [ChristianLempa](https://github.com/ChristianLempa/boilerplates) for proxmox packer boilerplates
+- [sdhibit](https://github.com/sdhibit/packer-proxmox-templates) for proxmox packer template examples

@@ -2,30 +2,37 @@
 autoinstall:
   version: 1
   locale: en_US.UTF-8
+
   keyboard:
     layout: en
     variant: us
+
   ssh:
     install-server: true
     allow-pw: true
     disable_root: true
     ssh_quiet_keygen: true
     allow_public_ssh_keys: true
+
   packages:
     - qemu-guest-agent
-    - sudo
+  %{ for package in cloud_init_apt_packages ~}
+  - ${package}
+  %{ endfor ~}
+
   storage:
     layout:
       name: direct
     swap:
       size: 0
+      
   user-data:
     package_upgrade: false
     timezone: europe/brussels
     users:
-      - name: packer
+      - name: ${ ssh_username }
         groups: [adm, sudo]
         lock-passwd: false
         sudo: ALL=(ALL) NOPASSWD:ALL
         shell: /bin/bash
-        passwd: #your-password
+        passwd: ${ ssh_password }
