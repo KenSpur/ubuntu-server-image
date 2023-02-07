@@ -6,7 +6,7 @@ source "file" "meta_data" {
 source "file" "user_data" {
   content = templatefile("${path.root}/templates/user-data.pkrtpl", {
     ssh_username            = var.ssh_username
-    ssh_password            = bcrypt(var.ssh_password)
+    ssh_key                 = var.ssh_key
     cloud_init_apt_packages = var.cloud_init_apt_packages
   })
   target = "${path.root}/http/user-data"
@@ -63,8 +63,8 @@ source "proxmox" "ubuntu-server-22-04-lts" {
   boot      = "c"
   boot_wait = "5s"
 
-  ssh_username = "${var.ssh_username}"
-  ssh_password = "${var.ssh_password}"
+  ssh_username         = "${var.ssh_username}"
+  ssh_private_key_file = "~/.ssh/id_rsa_packer"
 
   ssh_timeout = "15m"
 }
@@ -78,7 +78,7 @@ build {
 
   # wait for cloud-init to finish
   provisioner "shell" {
-    inline_shebang  = "/bin/sh -x"
+    inline_shebang = "/bin/sh -x"
     inline = [
       "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 5s; done"
     ]
@@ -86,7 +86,7 @@ build {
 
   # upgrade cloud-init
   provisioner "shell" {
-    inline_shebang  = "/bin/sh -x"
+    inline_shebang = "/bin/sh -x"
     inline = [
       "sudo apt-get update",
       "sudo apt-get upgrade cloud-init -y"
@@ -95,7 +95,7 @@ build {
 
   # clean up
   provisioner "shell" {
-    inline_shebang  = "/bin/sh -x"
+    inline_shebang = "/bin/sh -x"
     inline = [
       "sudo rm /etc/ssh/ssh_host_*",
       "sudo truncate -s 0 /etc/machine-id",
@@ -115,7 +115,7 @@ build {
   }
 
   provisioner "shell" {
-    inline_shebang  = "/bin/sh -x"
-    inline = ["sudo cp /tmp/99-pve.cfg /etc/cloud/cloud.cfg.d/99-pve.cfg"]
+    inline_shebang = "/bin/sh -x"
+    inline         = ["sudo cp /tmp/99-pve.cfg /etc/cloud/cloud.cfg.d/99-pve.cfg"]
   }
 }

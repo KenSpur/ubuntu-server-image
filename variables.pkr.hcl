@@ -26,10 +26,10 @@ variable "proxmox_vm_id" {
 # Ssh Variables
 variable "ssh_username" {
   type    = string
-  default = "packer"
+  default = "root"
 }
 
-variable "ssh_password" {
+variable "ssh_key" {
   type      = string
   sensitive = true
 }
